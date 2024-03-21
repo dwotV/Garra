@@ -9,6 +9,6 @@ También permite una manipulación primaria del módulo de sensores externos.
   3. Sensor ultrasónico (o de distancia)
   4. Sensor de tacto
   5. Sensor de sonido 
-  6. 
+     
 Es una excelente opción para quienes desean empezar a desarrollar lógica de programación de forma intuitiva y visualizarla en Hardware.
 
