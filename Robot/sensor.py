@@ -19,11 +19,14 @@ class sens:
             print(dp)
     
     def desColor(self):
-        self.ard.write(1)
+        self.ard.write(b'1')
 
     def desTouch(self):
-        self.ard.write(2)
+        self.ard.write(b'3')
     
     def desDistance(self):
-        self.ard.write(3)
+        self.ard.write(b'4')
+
+    def desPresence(self):
+        self.ard.write(b'5')
 
