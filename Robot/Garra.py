@@ -1,45 +1,60 @@
-import xarm # importamos xarm para utilizar las funciones básicas de posición de los motores de la garra
+# Este paquete controla los movimientos del brazo robótico xArm-UNO a través de una librería ya existente: 'xarm'.
+import xarm 
 
-#clase Garra que contiene todos los atributos y métodos correspondientes a una garra
 class Garra:
-
-    #Constructor de la clase Garra, sus atributos son "pos" y "rob". Para poder trabajar en coordenadas polares "pos" es el arreglo las posiciones de "r" en el tablero circular y "rob" es el robot que vamos a controlar
+    # Constructor de la clase Garra
+    
+    # El atributo 'pos' inicializa los valores para cada uno de los servo-motores 
+    # en el siguiente formato: [[servo, valor] , [servo2, valor2] ...].
+    # Estos valores son para ubicar objetos posicionados en un conjunto de anillos que pertenecen a un tablero circular. 
+    # Se utilizan coordenadas polares, donde el anillo supone el radio y un hora (valor entre 1 y 12) el ángulo.
+    
+    # El atributo 'rob' se utiliza para manipular al robot como un objeto de la clase Garra. 
+    # Sin embargo, es inicializado como '0' hasta que se utilice el método 'conecta()'.
+    
     def __init__(self):
         self.pos=[
-        [[2, 515], [3, 130], [4, 430], [5, 350]], #Anillo 1
-        [[2, 515], [3, 45], [4, 215], [5,225]], #Anillo 2
-        [[2, 515], [3, 55], [4, 125], [5, 175]], #Anillo 3
-        [[2, 515], [3, 140], [4,  125], [5, 155]], #Anillo 4
-        [[2, 515], [3, 215], [4, 125], [5, 0]] #Anillo 5
-        ]   #Array de las posiciones de todos los motores para las 5 posiciones en r (anillos) pertenecientes al radio del tablero circular
-        self.rob=0 #definimos el robot como cero hasta que se use el método "conecta()"
+        [[2, 515], [3, 130], [4, 430], [5, 350]],     # Anillo 1
+        [[2, 515], [3, 45], [4, 215], [5,225]],       # Anillo 2
+        [[2, 515], [3, 55], [4, 125], [5, 175]],      # Anillo 3
+        [[2, 515], [3, 140], [4,  125], [5, 155]],    # Anillo 4
+        [[2, 515], [3, 215], [4, 125], [5, 0]]        # Anillo 5
+        ]
+        self.rob=0
     
-    #Método para conectarse con la garra
+    
+    # Método para establecer la conexión con el robot mediante un puerto USB
+    # Al comprobar que la conexión fue exitosa, el robot se moviliza a su posición inicial 
     def conecta(self):
-        self.rob=xarm.Controller("USB") #Se conecta a la garra por el puerto USB y crea un objeto Controller para controlar a la Garra
-        self.rob.setPosition([[1, 355],[2, 905],[3, 265],[4, 340],[5, 535],[6, 500]],duration=2000,wait=True) #Se mueve a la posición de inicio y hace un movimiento para indicar que se conectó
-    
-    #Método para cerrar la garra
-    def agarra(self):
-        self.rob.setPosition(1,550,2000,True) #Se cambia la posición del Motor que controla la garra (Serv 1) para abrirla
-    
-    #Método para abrir la garra
-    def suelta(self):
-        self.rob.setPosition(1,0,2000,True) #Se cambia la posición del Motor que controla la garra (Serv 1) para  cerrarla
-    
-    #Método para ir a una posición del círculo predefinida. Tiene 2 parámetros: "hora" y "anillo". Para trabajar con coordenadas polares "hora" es el ángulo (theta) en el tablero circular y el anillo es la distancia del origen del tablero circular (r)
-    def mover(self, hora:int, anillo:int):
-        if(anillo<1 or anillo>5): #Valida que el parámetro de anillo tome una de las 5 posiciones posibles
-            print("ERROR, El anillo al que se moverá el gancho debe ser un número entero entre 1 y 5")
-        elif(hora<1 or hora>12): #Valida que el parámetro de hora tome una de las 12 posiciones posibles
-            print("ERROR, la hora a la que se moverá el gancho debe ser un número entero entre 1 y 12")
-            
-        else:
-            hora=int((1000/12)*hora) #Hace la transformación de nuestras posiciones del ángulo del círculo (theta) a las unidades de la librería "xarm" y lo transforma a entero
-            self.rob.setPosition(6,hora,2000,True)  #Se cambia la posición del Motor que controla la rotación (Serv 6) a la hora dada en los parámetros
-            self.rob.setPosition(self.pos[anillo-1],duration=2000,wait=True)  #Se cambia la posición de todos los motores por medio del elemento en la posición "anillo" del arreglo de posiciones en "r" (pos)
+        self.rob=xarm.Controller("USB")
+        self.rob.setPosition([[1, 355],[2, 905],[3, 265],[4, 340],[5, 535],[6, 500]],duration=2000,wait=True)
 
-    #Método para hacer una serie de movimientos que aparentan un saludo
+    
+    # Método para cerrar la garra
+    # Está diseñado para tomar un cubo de 3 cm de largo.
+    # Para objetos de diferente escala, se debe modificar el valor '550'
+    def agarra(self):
+        self.rob.setPosition(1,550,2000,True)
+    
+    # Método para abrir la garra
+    # Colocar 0 en el segundo campo para abrir por completo la garra 
+    def suelta(self):
+        self.rob.setPosition(1,0,2000,True)
+    
+    # Método para movilizar la garra dados la hora y el anillo
+    # Hora es el parámetro de rotación dado al servo 6
+    # Para ubicarse en el anillo correspondiente, llamar al array con la posición de cada servo
+    def mover(self, hora:int, anillo:int):
+        if(anillo<1 or anillo>5): 
+            print("ERROR, El anillo al que se moverá el gancho debe ser un número entero entre 1 y 5")
+        elif(hora<1 or hora>11):
+            print("ERROR, la hora a la que se moverá el gancho debe ser un número entero entre 1 y 12")
+        else:
+            hora=int((1000/11)*hora)   # Modificar el cálculo en caso de necesitar más horas                     
+            self.rob.setPosition(6,hora,2000,True)
+            self.rob.setPosition(self.pos[anillo-1],duration=2000,wait=True) 
+
+    # Método para aparentar un saludo
     def saludar(self):
         self.rob.setPosition([[1, 420], [2, 120], [3, 500], [4, 145], [5, 400], [6, 120]],duration=1000,wait=True)
         self.rob.setPosition([[1, 595], [2, 120], [3, 500], [4, 300], [5, 400], [6, 120]],duration=700,wait=True)
@@ -48,9 +63,7 @@ class Garra:
         self.rob.setPosition([[1, 595], [2, 120], [3, 500], [4, 0], [5, 400], [6, 120]],duration=700,wait=True)
         self.rob.setPosition([[1, 395], [2, 120], [3, 500], [4, 145], [5, 400], [6, 120]],duration=1000,wait=True)
     
-    #Método para ir a la posición predeterminada, para así facilitar movimiento de objetos y de la garra sin colisionar con un objeto. La garra se mamntendrá en su estado actual (abierto/cerrado)
+    # Método para ir a la posición inicial
+    # Facilita los movimientos de la garra y previene la colisión con objetos cercanos.
     def resetPosition(self):
-        self.rob.setPosition([[3, 265],[4, 340],[5, 535],[6, 500]],duration=2000,wait=True)
-    
-    def rps(self):
         self.rob.setPosition([[3, 265],[4, 340],[5, 535],[6, 500]],duration=2000,wait=True)
