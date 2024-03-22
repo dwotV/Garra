@@ -4,9 +4,11 @@ import serial
 class sens:
     ard=0
 
+    # Constructor de clase sens
     def __init__(self):
         pass
 
+    # Método para conectar la placa Arduino al Puerto indicado, en caso de una conexión fallida devuelve False
     def conectar(self,puerto:str):
         try:
             self.ard=serial.Serial(puerto,9600)
@@ -42,7 +44,9 @@ class sens:
         rawd[3]=float(rawd[3])
         rawd[4]=rawd[4].split(",")
         return rawd
+
     
+    #Método para mostrar la información del sensor de Color en el display integrado al modulo de sensores xarm. 
     def desColor(self)  ->bool :
         try:
             self.ard.write(b'11')
@@ -52,13 +56,15 @@ class sens:
             return False
 
     '''
+    #Método para mostrar la información del sensor Touch en el display integrado al modulo de sensores xarm. 
     def desTouch(self)  ->bool :
         try:
             self.ard.write(b'3')
         except:
             return False
     '''
-    
+
+    #Método para mostrar la información del sensor de Distancia en el display integrado al modulo de sensores xarm. 
     def desDistance(self)  ->bool :
         try:
             self.ard.write(b'14')
@@ -67,6 +73,7 @@ class sens:
         except:
             return False
 
+    #Método para mostrar la información de los sensores de Presencia en el display integrado al modulo de sensores xarm. 
     def desPresence(self)  ->bool :
         try:
             self.ard.write(b'15')
@@ -75,6 +82,9 @@ class sens:
         except:
             return False
 
+    # Método para devolver la lectura del sensor de detección de Color
+    # Se devuelve un color predefinido donde color = {'red', 'green', 'blue'}
+    # o se devuelve una lista con el código de color RGB en la forma [R,G,B]
     def getColor(self, op:int=0) ->str | list:
         dt=self.leerSens() # Split into RGB List
         dt=dt[0] #RGB
@@ -90,7 +100,11 @@ class sens:
         #Si op!=0, regresa el código rgb
         else:
             return dt # Return RGB List 
-    
+
+    # Método para devolver el resultado de la comparación entre una condición deseada predefinida donde col ∈ {'red', 'green', 'blue'}
+    # para el sensor de Color del sensor y la lectura actual del sensor.
+    # Método para devolver el resultado de la comparación entre una condición deseada donde col es una lista con un código RGB
+    # para el sensor de Color del sensor y la lectura actual del sensor.
     def isColor(self, col:str|list) ->bool :
         if(type(col)==str):
             return self.getColor()==col
@@ -98,23 +112,34 @@ class sens:
             dt=self.getColor(1)
             return dt==col
 
+    # Método para devolver la lectura del sensor de detección de Sonido
+    # Se devuelve un bool donde se indica la existencia de algún sonido
     def getSound(self)  ->bool :
         dt=self.leerSens() # Split into RGB List
         dt=dt[1] #Sound 
         return dt
 
+    # Método para devolver la lectura del sensor de detección de Touch
+    # Se devuelve un bool donde se indica la existencia de algún tipo de Touch donde:
+    #     0 -> Cualquier touch
+    #     1 -> Touch corto
+    #     2 -> Touch largo
     def getTouch(self)  ->int :
         dt=self.leerSens() # Leer existencia de cualquier tipo de touch
         dt=dt[2] #Touch
         return dt
-        
+
+    # Método para devolver la lectura del sensor de detección de Touch tipo 0
+    # Se devuelve un bool donde se indica la existencia de algún sonido cualquiera
     def isTouch(self)  ->bool :
         dt=self.getTouch()
         if(dt!=0):
             return True
         else:
             return False
-
+            
+    # Método para devolver la lectura del sensor de detección de Touch tipo 1
+    # Se devuelve un bool donde se indica la existencia de algún sonido corto
     def isShortTouch(self)  ->bool :
         dt=self.getTouch()
         if(dt==1):
@@ -122,6 +147,8 @@ class sens:
         else:
             return False
 
+    # Método para devolver la lectura del sensor de detección de Touch tipo 1
+    # Se devuelve un bool donde se indica la existencia de algún sonido largo
     def isLongTouch(self)  ->bool :
         dt=self.getTouch()
         if(dt==2):
@@ -129,11 +156,16 @@ class sens:
         else:
             return False
 
+    # Método para devolver la lectura del sensor de detección de Distancia
+    # Se devuelve un float donde se indica la distancia detectada con respecto al objeto físico colocado en el campo de detección del sensor
     def getDistance(self)  ->float :
         dt=self.leerSens() # Lectura de Sensores
         dt=dt[3] #Distance
         return dt
-    
+
+    # Método para devolver la lectura del sensor de Distancia 
+    # Se devuelve un bool donde se indica si el objeto detectado se encuentra dentro de un rango establecido mediante [limiteInferior, limiteSuperior]
+    # o unicamente un valor particular para comparar.
     def isDistance(self, infLimit:int|float, supLimit:int|float=-1):
         if(supLimit==-1):
             supLimit=infLimit
@@ -143,6 +175,17 @@ class sens:
         else:
             return False
 
+    # Método para devolver la lectura de los tres sensores de presencia
+    # Se devuelve una lista[str] donde se indica el estado de presencia de cada sensor, donde:
+    # ['0','0','0'] representa presencia nula en los tres sensores
+    # La distribución de sensores es la siguiente:
+    #      indice 0 -> Sensor Izquierda 
+    #      indice 1 -> Sensor Centro 
+    #      indice 2 -> Sensor Derecha (Sensor más cercano a la tarjeta Arduino del Módulo físico)  
+    # Método para devolver la lectura de un sensor de Presencia 
+    # Se devuelve un str donde se indica la presencia de un objeto en el sensor con el id indicado en "sensorid", donde:
+    #      '0' -> Sin presencia de objeto
+    #      '1' -> Presencia de objeto
     def getPresence(self,sensorid:int=0)  ->list[int] :
         if(sensorid==0):
             dt=self.leerSens() # Lectura de Sensores
@@ -154,7 +197,9 @@ class sens:
             else:
                 dt=self.getPresence() # Lectura de Sensores
                 return dt[sensorid-1]        
-    
+
+    # Método para devolver la lectura de un sensor de Presencia 
+    # Se devuelve un bool donde se indica la presencia de un objeto en el sensor con el id indicado en "sensorid"
     def isPresence(self, sensorid:int |list[str])  ->bool :
         if(type(sensorid)!=list):
             if(sensorid<1 or sensorid>3):
