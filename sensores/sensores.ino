@@ -54,7 +54,7 @@ int b_f = 1280;
 #define TxPin 9
 #define SOUND A0
 
-#define MAXVOL 8
+#define MAXVOL 10
 
 uint8_t result;
 uint8_t volume;
@@ -224,14 +224,14 @@ void touchDetect(bool imp){
   if (!digitalRead(TOUCH))
   {//Detection touch sensor
     digitalWrite(LED, HIGH);
-    delay(80);
+    delay(150);
     if (digitalRead(TOUCH))
     {//If it is short press once
       digitalWrite(LED, LOW);
       if(imp) Serial.print("1@");
     }
     else{
-      delay(420);
+      delay(350);
       digitalWrite(LED, LOW);
       if(imp) Serial.print("2@");
     }
