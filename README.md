@@ -118,7 +118,7 @@ Presencia: (lista[str])
 ## Ejemplo de uso
 <a name= "ejemplo"></a>
 ```
-import Garra
+from Garra import *
 import time
 
 rb=Garra()
