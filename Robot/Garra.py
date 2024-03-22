@@ -4,7 +4,12 @@ import xarm
 # Este paquete se utiliza para el cálculo de la posición de los rotores cuando es necesario.
 import math
 
+import time
+
+from Garra.sensor import sens
+
 class Garra:
+
     # Constructor de la clase Garra
     
     # El atributo 'pos' inicializa los valores para cada uno de los servo-motores 
@@ -24,15 +29,20 @@ class Garra:
         [[2, 515], [3, 215], [4, 125], [5, 0]]        # Anillo 5
         ]
         self.rob=0
+        self.sen=sens()
     
     
     # Método para establecer la conexión con el robot mediante un puerto USB
     # Al comprobar que la conexión fue exitosa, el robot se moviliza a su posición inicial 
-    def conecta(self)  ->bool :
+    def conecta(self):
         try:
             self.rob=xarm.Controller("USB")
             self.rob.setPosition([[1, 355],[2, 905],[3, 265],[4, 340],[5, 535],[6, 500]],duration=2000,wait=True)
-        except return False
+        except:
+            return False
+    
+    def conectaSen(self,usb):
+        self.sen.conectar(usb)
         
     
     # Método para cerrar la garra
@@ -71,17 +81,17 @@ class Garra:
     # Método que lleva un cubo de la posición inicial de la garra al sensor de color y lo lee
     # La posición puede cambiar al modificar el plano y movimiento de la garra
     # Op es un parámetro que indica si se regresará el color en formato RGB o 'red', 'green' o 'blue'
-    def leeColor(self,op=0:int):
-        self.rob.setPosition([[2, 930], [3, 180], [4, 140], [5, 210], [6, 0]],duration=2000,wait=True)
-        time.sleep(3)
-        return getColor(op)
+    def leeColor(self,op:int=0):
+        self.rob.setPosition([[2, 500], [3, 130], [4, 145], [5, 240], [6, 50]],duration=2000,wait=True)
+        time.sleep(2.5)
+        return self.sen.getColor(op)
 
     # Método que recibe una posición y hace que la garra recoja el bloque que esté en ella y le aplica el método leeColor()
     def mueveBloque2Color(self,hora:int,anillo:int):
-        mover(hora,anillo)
-        agarrar()
-        resetPosition()
-        return leeColor()
+        self.mover(hora,anillo)
+        self.agarra()
+        self.resetPosition()
+        return self.leeColor()
     
     # Método para ir a la posición inicial
     # Facilita los movimientos de la garra y previene la colisión con objetos cercanos.
