@@ -15,17 +15,21 @@ Al ser un lenguaje de alto nivel, se utilizó Python para el diseño de la inter
 Puesto que tanto el Hardware como el Software están en constante evolución, es probable que se requiera modificar el código en el futuro para que sea congruente con las versiones contemporáneas de Arduino.
 
 ## Tabla de contenidos
-1. Requisitos
+1. [Requisitos](#requisitos)
    * Dependencias de Software
    * Instalación de librerías
-2. ¿Cómo funciona?
+2. [Protocolo](#protocolo)
    * Métodos de la clase
+       * Garra
+       * Sensor
 4. Instrucciones
 5. Ejemplo de uso
+6. Preguntas frequentes
    
 ## Requisitos
+<a name="requisitos"></a>
 
-## Dependencias de Software
+### Dependencias de Software
 
 Para el funcionamiento del código, se requiere la instalación del siguiente software:
 _Al desarrollar el proyecto se utilizó Python 3.11 y Arduino 2.3.2_
@@ -57,3 +61,29 @@ La instalación de las siguientes librerías solo es necesaria si se desea utili
 > pip install pyserial
 > pip install time
 ```
+## Protocolo
+<a name="protocolo"></a>
+### Garra
+
+La clase Garra contiene los atributos posición y robot.
+'Pos' es un array bidimensional que guarda dos enteros en el formato [[sn, v],[sn, v] … ], donde sn es el número del servo motor y v el valor que controla su movimiento.
+
+| Nombre de la función | Descripción | Parámetros | Ejemplo de uso |
+| -------------------- | ----------- | ---------- | -------------- |
+| conecta() | Conectar con el robot vía USB | N/A | conecta() |
+| agarra() | Cierra la garra para tomar un objeto de 3 cm de radio| N/A | agarra()|
+| suelta() | Abre la garra por completo | N/A | suelta() |
+| mover() | Moviliza la garra en un ángulo y radio específicos | mover(hora, anillo) | mover(2, 5) |
+| saludar() | Simula un saludo a través de movimientos del brazo | N/A | saludar()|
+| leeColor() | Moviliza un objeto de la posición inicial de la garra al sensor de color para leerlo, con opción de desplegarlo como RGB (op = 0) o 'red' (op = 1) |  leeColor(op) | leeColor(1)|
+| mueveBloque2Color | Recibe una posición, recoje el bloque en dicha posición y lee su color | mueveBloque2Color(hora, anillo) | mueveBloque2Color(8, 3)|
+| resetPosition() | Moviliza la garra a la posición inicial | N/A | resetPosition() |
+
+
+### Sensor
+| Nombre de la función | Descripción | Parámetros | Ejemplo de uso |
+| -------------------- | ----------- | ---------- | -------------- |
+| 
+
+
+## 
