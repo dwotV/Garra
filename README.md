@@ -65,7 +65,7 @@ La instalación de las siguientes librerías solo es necesaria si se desea utili
 <a name="protocolo"></a>
 ### Garra
 
-La clase Garra contiene los atributos posición y robot.
+La clase Garra posee los atributos posición y robot.
 'Pos' es un array bidimensional que guarda dos enteros en el formato [[sn, v],[sn, v] … ], donde sn es el número del servo motor y v el valor que controla su movimiento.
 
 | Nombre de la función | Descripción | Parámetros | Ejemplo de uso |
@@ -81,9 +81,40 @@ La clase Garra contiene los atributos posición y robot.
 
 
 ### Sensor
+La clase sensor posee el atributo 'ard', haciendo referencia a Arduino.
+Color: (R,G,B)
+Sonido: (Bool)
+Touch: (int) - 0= culquier toque, 1= toque corto, 2= toque largo
+Distancia: (float)
+Presencia: (lista[str])
 | Nombre de la función | Descripción | Parámetros | Ejemplo de uso |
 | -------------------- | ----------- | ---------- | -------------- |
-| 
+| conectar() | Conecta la placa Arduino al puerto indicado (str) | conectar(puerto) | conectar('COM3')|
+| leerSens() | Hace una lectura de todos los sensores y retorna una lista con las entradas en el siguiente orden: color, sonido, touch, distancia, presencia | leerSens(list[])| leerSens(list[list[1,2,3], True, 1, 3.54, list[0,0,0])|
+| desColor() | Muestra la información del sensor de color en el display | (N/A) | desColor()|
+|desDistance()|Muestra la información del sensor de distancia en el display | (N/A) | desDistance()|
+|desPresence()|Muestra la información del sensor de presencia en el display | (N/A) | desPresence()|
+|getColor() | Devuelve la lectura del color con opción de desplegarlo como RGB (op = 0) o 'red' (op = 1) | getColor(op) | getColor(0)|
+|isColor() | Compara si se cumple la condición del color en la lectura | isColor(color) | isColor('red') o isColor([9,32,15]) |
+| getSound() | Devuelve la lectura del sensor de sonido (si se detectó o no) | N/A | getSound() |
+| getTouch() | Devuelve la lectura del sensor de touch (0= cualquiera, 1= corto, 2= largo) | N/A | getTouch() |
+|isTouch()| Si se detecta un touch, valida que se detecte un sonido| N/A| isTouch()|
+|isShortTouch()| Si se detecta un touch corto, valida que el sonido sea corto| N/A| isShortTouch()|
+|isLongTouch()| Si se detecta un touch largo, valida que el sonido sea largo| N/A| isLongTouch()|
+|getDistance()|Devuelve la distancia detectada por el sensor de distancia| N/A | getDistance()|
+|isDistance()| Devuelve si el objeto se encuentra o no dentro de un rango de distancia | isDistance(infLimit, supLimit) | isDistance(3,8)|
+|getPresence()| Devuelve una lista que indica el estado de presencia o no ['0', '0', '0'] índice 0 = izquierda; índice 1= centro; índice 2= derecha| (N/A)| getPresence()|
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## 
