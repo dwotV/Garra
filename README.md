@@ -153,4 +153,27 @@ for i in range(5):
 
 ```
 
+```
+from Robot.Garra import Garra
+from Robot.sensor import sens
+import time
+g=Garra()
+g.conecta()
+g.conectaSen("COM3")
+
+for i in range(4):
+    if(g.mueveBloque2Color(i+2,1)=='blue'):
+        g.mover(i+1,3)
+        g.suelta()
+        g.resetPosition()
+    elif(g.sen.getColor()=='green'):
+        g.mover(i+1,4)
+        g.suelta()
+        g.resetPosition()
+    else:
+        g.mover(i+1,5)
+        g.suelta()
+        g.resetPosition()
+```
+
 
