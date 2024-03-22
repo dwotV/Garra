@@ -6,7 +6,7 @@ long_description = 'Un paquete de python para poder utilizar de manera sencilla 
 
 #Configrurado
 setup(
-    name='Garra-main',
+    name='Garra',
     version=version,
     author='Andrea Bahena Valdés, José de Jesús Becerra González, Miguel Ángel Pérez Ávila, Santiago Albarrán Organista, Deal Chávez Ferreyra',
     author_email='<daelcferreyra@gmail.com>',
