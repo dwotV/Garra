@@ -22,9 +22,8 @@ Puesto que tanto el Hardware como el Software están en constante evolución, es
    * Métodos de la clase
        * Garra
        * Sensor
-4. Instrucciones
-5. Ejemplo de uso
-6. Preguntas frequentes
+3. [Instrucciones](#instrucciones)
+4. Ejemplo de uso
    
 ## Requisitos
 <a name="requisitos"></a>
@@ -104,17 +103,53 @@ Presencia: (lista[str])
 |getDistance()|Devuelve la distancia detectada por el sensor de distancia| N/A | getDistance()|
 |isDistance()| Devuelve si el objeto se encuentra o no dentro de un rango de distancia | isDistance(infLimit, supLimit) | isDistance(3,8)|
 |getPresence()| Devuelve una lista que indica el estado de presencia o no ['0', '0', '0'] índice 0 = izquierda; índice 1= centro; índice 2= derecha| (N/A)| getPresence()|
+| isPresence() | Devuelve un booleano que indica si la presencia coincide con la que le indicas | isPresence(id_sensor) | isPresence([1, 0, 0]) |
+| until() | Espera hasta que se cumpla una condición con los sensores para regresar True | until (sensor, condición) | until("color", "red") |
+
+## Instrucciones
+<a name= "instrucciones"></a>
+1. Instalar todas las dependencias de software
+2. Descargar la librería "Garra"
+3. Instalar el Robot
+4. Conectar el Robot
+5. Programar utilizando los métodos y funciones necesarias
+6. Ejecutar el código
+
+## Ejemplo de uso
+<a name= "ejemplo"></a>
+```
+import Garra
+import time
+
+rb=Garra()
+rb.conecta()
+rb.mover(1,1)
+rb.agarra()
+rb.resetPosition()
+rb.mover(1,1)
+rb.suelta()
+rb.resetPosition()
+for i in range(5):
+    for j in range(10):
+        rb.mover(j+1,i+1)
+        rb.agarra()
+        rb.resetPosition()
+        if ((j+2)>10):
+            continue
+        else:
+            rb.mover(j+2,i+1)
+            rb.suelta()
+            rb.resetPosition()
+    rb.mover(10,i+1)
+    rb.agarra()
+    rb.resetPosition()
+    if ((i+2)>5):
+        continue
+    else:
+        rb.mover(1,i+2)
+        rb.suelta()
+        rb.resetPosition()
+
+```
 
 
-
-
-
-
-
-
-
-
-
-
-
-## 
