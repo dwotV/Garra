@@ -17,9 +17,11 @@ Puesto que tanto el Hardware como el Software están en constante evolución, es
 ## Tabla de contenidos
 1. Requisitos
    * Dependencias de Software
-   * Instalación de librerías  
-3. Instrucciones
-4. Ejemplo de uso
+   * Instalación de librerías
+2. ¿Cómo funciona?
+   * Métodos de la clase
+4. Instrucciones
+5. Ejemplo de uso
    
 ## Requisitos
 
