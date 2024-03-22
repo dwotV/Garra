@@ -119,7 +119,8 @@ Presencia: (lista[str])
 <a name= "ejemplo"></a>
 El siguiente ejemplo agarra un cubo en la posición (1,1) y lo mueve por todas las posiciones:
 ```
-from Garra.Garra import Garra
+from Robot.Garra import Garra
+from Robot.sensor import sens
 import time
 
 rb=Garra()
