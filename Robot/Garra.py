@@ -64,6 +64,20 @@ class Garra:
         self.rob.setPosition([[1, 250], [2, 120], [3, 500], [4, 300], [5, 400], [6, 120]],duration=700,wait=True)
         self.rob.setPosition([[1, 595], [2, 120], [3, 500], [4, 0], [5, 400], [6, 120]],duration=700,wait=True)
         self.rob.setPosition([[1, 395], [2, 120], [3, 500], [4, 145], [5, 400], [6, 120]],duration=1000,wait=True)
+
+    #Método que lleva un cubo de la posición inicial de la garra al sensor de color y lo lee (la posición puesta puede variar con modificaciones en el plano y movimiento de la garra)
+    #op es un método que indica si se regresará el color en formato rgb o 'red', 'green' o 'blue'
+    def leeColor(self,op=0:int):
+        self.rob.setPosition([[2, 930], [3, 180], [4, 140], [5, 210], [6, 0]],duration=2000,wait=True)
+        time.sleep(3)
+        return getColor(op)
+
+    #Método que recibe una posición y hace que la garra recoja el bloque que esté en ella y le aplica el método leeColor()
+    def mueveBloque2Color(self,hora:int,anillo:int):
+        mover(hora,anillo)
+        agarrar()
+        resetPosition()
+        return leeColor()
     
     # Método para ir a la posición inicial
     # Facilita los movimientos de la garra y previene la colisión con objetos cercanos.
