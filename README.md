@@ -23,7 +23,7 @@ Puesto que tanto el Hardware como el Software están en constante evolución, es
        * Garra
        * Sensor
 3. [Instrucciones](#instrucciones)
-4. Ejemplo de uso
+4. [Ejemplo de uso](#ejemplo)
    
 ## Requisitos
 <a name="requisitos"></a>
