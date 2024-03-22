@@ -103,7 +103,7 @@ void setup() {
 
 
 //Check whether each sensor detects the object. If the object is detected, the robotic arm will run the corresponding action group
-String presenceDetect()
+String presenceDetect(bool imp)
 {
   static uint32_t timer;
   String d="0,0,0";
@@ -122,7 +122,7 @@ String presenceDetect()
       timer = millis() + 500;
       d[4]= '1'; //right sensor
     }
-  Serial.print(d);
+  if(imp) Serial.print(d);
   return d;
 }
 
@@ -155,7 +155,7 @@ void drawPresence() {
 }
 
 
-int colorDetect()
+int colorDetect(bool imp)
 {
   uint16_t r, g, b, c;
   int t;
@@ -168,6 +168,7 @@ int colorDetect()
   r = map(r, r_f, R_F, 0, 255);  
   g = map(g, g_f, G_F, 0, 255);
   b = map(b, b_f, B_F, 0, 255);
+  //Serial.print(r); Serial.print(" ");  Serial.print(g); Serial.print(" ");  Serial.print(b); Serial.println(" ");
   
   //Find the largest value in R, G, B. For example, the maximum is R means that the object is Red
   if (r > g)
@@ -178,10 +179,12 @@ int colorDetect()
     t = BLUE;
   if (t == RED && r < b)
     t = BLUE;
-  Serial.print(r); Serial.print(",");   //Serial print and detects rgb value
-  Serial.print(g); Serial.print(",");
-  Serial.print(b);
-  Serial.print("@");
+  if(imp){
+    Serial.print(r); Serial.print(",");   //Serial print and detects rgb value
+    Serial.print(g); Serial.print(",");
+    Serial.print(b);
+    Serial.print("@");
+  }
 
   //Returns the color only if the RGB value is greater than 30, otherwise returns 0
   if(t == BLUE && b > 80)
@@ -217,7 +220,7 @@ void drawColor(int t)
 }
 
 //Touch
-void touchDetect(){
+void touchDetect(bool imp){
   if (!digitalRead(TOUCH))
   {//Detection touch sensor
     digitalWrite(LED, HIGH);
@@ -225,25 +228,27 @@ void touchDetect(){
     if (digitalRead(TOUCH))
     {//If it is short press once
       digitalWrite(LED, LOW);
-      Serial.print("1@");
+      if(imp) Serial.print("1@");
     }
     else{
       delay(420);
       digitalWrite(LED, LOW);
-      Serial.print("2@");
+      if(imp) Serial.print("2@");
     }
   }
   else{
-    Serial.print("0@");
+    if(imp) Serial.print("0@");
   }
 }
 
 //Distance
-void getDistance() 
+void getDistance(bool imp) 
  {
     distance = ((float)ultrasound.GetDistance())/10;
-    Serial.print(distance);
-    Serial.print('@');
+    if(imp){
+      Serial.print(distance);
+      Serial.print('@');
+    }
   }
 
 void rainbow_color()          //Gradient rainbow light
@@ -345,7 +350,7 @@ uint8_t AdcChange(uint16_t x)
   return volume;
 }
 
-void SoundDetect()
+void SoundDetect(bool imp)
 {
   static uint32_t timer;
   static uint8_t step;
@@ -399,9 +404,11 @@ void SoundDetect()
           result++;
         }
   //Serial.print(AdcChange(analogRead(SOUND)));
-  Serial.print(result);
+  if(imp){
+    Serial.print(result);
+    Serial.print("@");
+  }
   result=0;
-  Serial.print("@");
 }
 
 void flash()
@@ -415,25 +422,46 @@ void flash()
 
 
 void loop() {
-  int t=colorDetect();
-  int incoming=Serial.read();
-  if(incoming!=-1) dis=incoming;
-  SoundDetect();
-  flash(); 
-  touchDetect();  
-  getDistance();
-  runDistance();
-  String activeSensor = presenceDetect();
-  if(distance<5||(distance>7&&distance<12)||(distance>14&&distance<19)||distance>21)
-    rainbow_color();
-  if(dis=='1') drawColor(t);
-  else if(dis=='4') drawDistance();
-  else if(dis=='5') drawPresence();
-  Serial.println("");
-  //Serial.println(dis);
-  //Serial.println(incoming);
+  int trb=Serial.read();
+  if(trb!=-1){
+    int incoming=Serial.read();
+    if(incoming!=-1) dis=incoming;
+    int t=colorDetect(true);
+    SoundDetect(true);
+    flash(); 
+    touchDetect(true);  
+    getDistance(true);
+    runDistance();
+    String activeSensor = presenceDetect(true);
+    if(distance<5||(distance>7&&distance<12)||(distance>14&&distance<19)||distance>21)
+      rainbow_color();
+    if(dis=='1') drawColor(t);
+    else if(dis=='4') drawDistance();
+    else if(dis=='5') drawPresence();
+    Serial.println("");
+    //Serial.println(dis);
+    //Serial.println(incoming);
+  }
+  else{
+    int incoming=Serial.read();
+    if(incoming!=-1 && incoming!='0') dis=incoming;
+    int t=colorDetect(false);
+    SoundDetect(false);
+    flash(); 
+    touchDetect(false);  
+    getDistance(false);
+    runDistance();
+    String activeSensor = presenceDetect(false);
+    if(distance<5||(distance>7&&distance<12)||(distance>14&&distance<19)||distance>21)
+      rainbow_color();
+    //Serial.println(t);
+    //Serial.println(dis);
+    if(dis=='1') drawColor(t);
+    else if(dis=='4') drawDistance();
+    else if(dis=='5') drawPresence();
+    //Serial.println("");
+    //Serial.println(dis);
+    //Serial.println(incoming);
+  }
   delay(200);
 }
-
-
-
