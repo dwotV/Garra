@@ -4,6 +4,7 @@ import xarm
 # Este paquete se utiliza para el cálculo de la posición de los rotores cuando es necesario.
 import math
 
+# Este paquete se utiliza para el control de delays.
 import time
 
 from Garra.sensor import sens
@@ -40,7 +41,9 @@ class Garra:
             self.rob.setPosition([[1, 355],[2, 905],[3, 265],[4, 340],[5, 535],[6, 500]],duration=2000,wait=True)
         except:
             return False
-    
+
+
+    #Método para conectar un objeto de la clase Sensor y establecer conexión con el arduino del módulo físico de sensores.
     def conectaSen(self,usb):
         self.sen.conectar(usb)
         
