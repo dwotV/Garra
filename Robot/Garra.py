@@ -25,10 +25,12 @@ class Garra:
     
     # Método para establecer la conexión con el robot mediante un puerto USB
     # Al comprobar que la conexión fue exitosa, el robot se moviliza a su posición inicial 
-    def conecta(self):
-        self.rob=xarm.Controller("USB")
-        self.rob.setPosition([[1, 355],[2, 905],[3, 265],[4, 340],[5, 535],[6, 500]],duration=2000,wait=True)
-
+    def conecta(self)  ->bool :
+        try:
+            self.rob=xarm.Controller("USB")
+            self.rob.setPosition([[1, 355],[2, 905],[3, 265],[4, 340],[5, 535],[6, 500]],duration=2000,wait=True)
+        except return False
+        
     
     # Método para cerrar la garra
     # Está diseñado para tomar un cubo de 3 cm de largo.
