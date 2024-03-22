@@ -1,5 +1,8 @@
 # Este paquete controla los movimientos del brazo robótico xArm-UNO a través de una librería ya existente: 'xarm'.
-import xarm 
+import xarm
+
+# Este paquete se utiliza para el cálculo de la posición de los rotores cuando es necesario.
+import math
 
 class Garra:
     # Constructor de la clase Garra
@@ -49,10 +52,10 @@ class Garra:
     def mover(self, hora:int, anillo:int):
         if(anillo<1 or anillo>5): 
             print("ERROR, El anillo al que se moverá el gancho debe ser un número entero entre 1 y 5")
-        elif(hora<1 or hora>11):
-            print("ERROR, la hora a la que se moverá el gancho debe ser un número entero entre 1 y 12")
+        elif(hora<1 or hora>10):
+            print("ERROR, la hora a la que se moverá el gancho debe ser un número entero entre 1 y 10")
         else:
-            hora=int((1000/11)*hora)   # Modificar el cálculo en caso de necesitar más horas                     
+            hora=math.floor(120+((760/9)*(hora-1)))   # Aqui transformamos el rango de xarm (0-1000) a 10 posiciones que abarcan 180 grados. Modificar el cálculo en caso de necesitar más horas o un ángulo diferente.                     
             self.rob.setPosition(6,hora,2000,True)
             self.rob.setPosition(self.pos[anillo-1],duration=2000,wait=True) 
 
