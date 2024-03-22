@@ -1,4 +1,4 @@
-*Instrucciones de instalación para la libreria U8g2 en arduino.*
+# Instrucciones de instalación para la libreria U8g2 en arduino.
 <img alt="image" src="https://github.com/dwotV/Garra/blob/main/sensores/img/1.jpg">
 <img alt="image" src="https://github.com/dwotV/Garra/blob/main/sensores/img/2.jpg">
 <img alt="image" src="https://github.com/dwotV/Garra/blob/main/sensores/img/3.jpg">
