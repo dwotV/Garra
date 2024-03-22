@@ -238,7 +238,7 @@ class sens:
             return True
 
     #Método until incompleto (no dejar avanzar hasta que se cumpla una condición)
-    def until(self, sen: "color" | "sound" | "touch" | "distance" | "presence" , cond="":any)  ->bool :
+    def until(self, sen: {'color', "sound", "touch", "distance", "presence"} , cond:any="")  ->bool :
         while True:
             #Until color
             if(sen=="color"): #cond debe ser 'red', 'green', 'blue' o una lista de código RGB y utiliza como criterio isColor()
@@ -256,7 +256,7 @@ class sens:
                     return True
                 elif(cond==1 and self.isShortTouch()): #cond==1 significa que revisa un toque corto con isShortTouch()
                     return True
-                elif(self.isLongTouch()) #otro cond significa que revisa un toque largo con isLongTouch()
+                elif(self.isLongTouch()): #otro cond significa que revisa un toque largo con isLongTouch
                     return True
             #Until distancia
             elif(sen=="distance"):
@@ -264,7 +264,7 @@ class sens:
                     if(self.isDistance(cond)):
                         return True
                 elif(len(cond)==2): #si cond es una lista de dos posiciones, llama isDistance() con dos parámetros
-                    if(self.isDistance(cond[0],cond[1]):
+                    if(self.isDistance(cond[0],cond[1])):
                         return True
             #Until presencia
             elif(sen=="presence" and (type(cond)==int or type(cond)==list)): #cond debe ser entero o lista para poder ser enviado a isPresence()
@@ -273,6 +273,3 @@ class sens:
             #Default
             else:
                 return False #si no se cumple nada, devuelve False
-                    
-                
-                    
