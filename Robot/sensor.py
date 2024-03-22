@@ -225,7 +225,7 @@ class sens:
 
         
 
-    #Método until incompleto (no dejar avanzar hasta que se cumpla una condición)
+    #Método until (no dejar avanzar hasta que se cumpla una condición)
     def until(self, sen: str , cond:any="")  ->bool :
         while True:
             #Until color
