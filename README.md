@@ -153,7 +153,7 @@ for i in range(5):
         rb.resetPosition()
 
 ```
-
+El siguiente ejemplo  agarra cuatro cubos en posiciones adyacentes a lo largo de 4 horas, desde (2,1) hasta (5,1), y dependiendo de su color lo moverá a otra posición.
 ```
 from Robot.Garra import Garra
 from Robot.sensor import sens
